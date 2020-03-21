@@ -8,10 +8,10 @@ module_dict = {'main' : '00', 'merger' : '01', 'extractor' : '02'}
 def savelog(autoslides, text):
     currmodule = autoslides.currmodule 
     currmodule_num = module_dict[currmodule]
-    filepath = autoslides.debugpath + '/' + currmodule + '_' + currmodule_num + '.log'
+    filepath = autoslides.debugpath + '/' + currmodule_num + '_' + currmodule + '.log'
     
     try:
-        f = open(filepath, 'a')
+        f = open(filepath, 'w')
         f.write(text)
         f.close()
     except Exception as e:

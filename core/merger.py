@@ -57,7 +57,7 @@ class Merger:
         includereg = re.compile(r'\\include{[^{}]*}')
         
 
-        ftext = re.sub(inputreg, lambda x: self.getlinkedfiles(newdirpath, cleaninput(x.group())), ftext)
-        ftext = re.sub(includereg, lambda x: self.getlinkedfiles(newdirpath, cleaninclude(x.group())), ftext)
+        ftext = re.sub(inputreg, lambda x: self.getlinkedfiles(newdirpath, cleaninput(x.group())) + ' <--path:' + newdirpath + '--> ', ftext)
+        ftext = re.sub(includereg, lambda x: self.getlinkedfiles(newdirpath, cleaninclude(x.group())) + ' <--path:' + newdirpath + '--> ', ftext)
 
-        return ftext
+        return ' <--path:' + newdirpath + '--> ' +  ftext
