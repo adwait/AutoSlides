@@ -18,7 +18,7 @@ import getopt
 
 import core.merger
 import core.utils
-# import core.content_extractor
+import core.extractor
 
 
 help_string = 'please consult source code'
@@ -41,6 +41,7 @@ class autoslides:
     # modulelist = ['merge']
     # modules = []
     currmodule = None
+    rawtext = None
 
 def setconfig(config):
     # TODO: decide on configuration options and format and implement this method
@@ -52,7 +53,7 @@ def main():
     autoslides.cmdline = sys.argv
     autoslides.timestamp = time.time()
 
-    # os.makedirs(os.path.dirname(autoslides.debugpath), exist_ok=True)
+    os.makedirs(autoslides.debugpath, exist_ok=True)
 
     print('')
     print(' AutoSlides ')
@@ -86,23 +87,34 @@ def main():
             autoslides.inputfile = a
         elif o in "-c": 
             autoslides.setconfig(a)
-        elif  o in "d":
+        elif  o in "-d":
             autoslides.debug = True
+
+    autoslides.currmodule = 'main'
+    if autoslides.debug:
+        core.utils.savelog(autoslides,autoslides.inputfile)
+        
 
     # Merge LaTeX source into a single file
     autoslides.currmodule = 'merger'
-    Merger = core.merger.Merger()
+    merger = core.merger.Merger()
     # print(autoslides.inputfile)
-    Merger.loadfromstring(autoslides.inputfile, autoslides)
-    output = Merger.getoutput()
-
-    print(output)
+    merger.loadfrommain(autoslides)
+    autoslides.rawtext = merger.getoutput()
 
     if autoslides.debug:
-        core.utils.savelog('{0}/merger__input.log'.format(autoslides.debugpath),input)
-        core.utils.savelog('{0}/merger__output.log'.format(autoslides.debugpath),output)
-        
+        core.utils.savelog(autoslides, autoslides.rawtext)
+    
 
+    autoslides.currmodule = 'extractor'
+    extractor = core.extractor.Extractor()
+    extractor.loadfrommain(autoslides)
+    blocks = extractor.getblocks()
+
+    print(blocks)
+
+    if autoslides.debug:
+        core.utils.savelog(autoslides, autoslides.rawtext)
 
 if __name__ == "__main__":
     main()        

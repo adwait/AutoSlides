@@ -9,15 +9,15 @@ import re
 class Merger:
 
     mainpath = None
-    mainfiletext = None
+    # mainfiletext = None
     
     def __init__(self):
         pass
 
-    def loadfromstring(self, input, asl):
-        self.mainpath = input
-        mainfile = open(input)
-        mainfiletext = mainfile.read()
+    def loadfrommain(self, asl):
+        self.mainpath = asl.inputfile
+        # mainfile = open(self.mainpath)
+        # mainfiletext = mainfile.read()
         
     def getoutput(self):
         maindirpath = '/'.join(self.mainpath.split('/')[:-1])
