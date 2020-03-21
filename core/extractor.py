@@ -8,6 +8,9 @@ class Block:
     def __init__(self, con, lpath, add):
         self.content, self.localpath, self.address = con, lpath, add
 
+    def prettyprint(self):
+        print("\tAddress:{0}\n\tLocalpath:{1}\n\tContent:{2}".format(self.address, self.localpath, self.content))
+
 
 class Extractor:
 
@@ -28,8 +31,6 @@ class Extractor:
         key = ''
         lpath = ''
 
-        print(rawblocks)
-
         for b in rawblocks:
             if re.match(pathreg, b):
                 lpath = re.match(pathreg, b).group(1)
@@ -37,9 +38,15 @@ class Extractor:
                 if key == b:
                     key = ''
                 else:
-                    self.rawdict[re.match(addressreg, key).group(1)] = (b.strip(), lpath)
+                    cleankey = re.match(addressreg, key).group(1)
+                    self.rawdict[cleankey] = Block(b.strip(), lpath, cleankey)
             else:
                 if re.match(addressreg, b):
                     key = b
 
         return self.rawdict
+
+    def prettyprint(self):
+        for key, value in self.rawdict.items():
+            print(key + ":")
+            value.prettyprint()

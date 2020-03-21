@@ -111,7 +111,9 @@ def main():
     extractor.loadfrommain(autoslides)
     blocks = extractor.getblocks()
 
-    print(blocks)
+    extractor.prettyprint()
+
+    # print(blocks)
 
     if autoslides.debug:
         core.utils.savelog(autoslides, autoslides.rawtext)
